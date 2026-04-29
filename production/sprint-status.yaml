@@ -13,47 +13,47 @@ stories:
     name: "Narrative State Machine"
     file: "production/stories/sprint-1-nsm.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 5
     blocker: ""
-    completed: ""
+    completed: "2026-04-29"
   - id: "S1-2"
     name: "Save/Load System (MVP)"
     file: "production/stories/sprint-1-save-load.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 3
     blocker: ""
-    completed: ""
+    completed: "2026-04-29"
   - id: "S1-3"
     name: "Branching Dialogue System"
     file: "production/stories/sprint-1-dialogue-system.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 4
     blocker: ""
-    completed: ""
+    completed: "2026-04-29"
   - id: "S1-4"
     name: "Touch Input System"
     file: "production/stories/sprint-1-touch-input.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 2
     blocker: ""
-    completed: ""
+    completed: "2026-04-29"
   - id: "S1-5"
     name: "Dialogue UI"
     file: "production/stories/sprint-1-dialogue-ui.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: ui-programmer
     estimate_days: 3
     blocker: ""
-    completed: ""
+    completed: "2026-04-29"
   - id: "S1-6"
     name: "HUD Trust Meters"
     file: "production/stories/sprint-1-hud-trust-meters.md"
