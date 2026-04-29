@@ -6,6 +6,9 @@
 > **Status**: backlog
 > **Estimate**: 2 days
 > **Owner**: ui-programmer
+> **Type**: UI
+> **ADR**: No ADR applies — Unity UI patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -41,3 +44,7 @@ Implement the persistent trust meter display: two horizontal bars (Imperial Loya
 
 - S1-1 (NSM) — trust values stored in NSM
 - S1-8 (Dual Trust) — emits `TrustValueChanged` events
+
+## Test Evidence
+
+Location: `production/qa/evidence/` — manual walkthrough doc with screenshot evidence for bar animation, danger pulse, crisis flash, and decay indicator

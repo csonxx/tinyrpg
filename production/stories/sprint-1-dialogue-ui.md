@@ -6,6 +6,9 @@
 > **Status**: ready-for-dev
 > **Estimate**: 3 days
 > **Owner**: ui-programmer
+> **Type**: UI
+> **ADR**: No ADR applies — Unity UI Toolkit patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -75,3 +78,7 @@ Implement the player-facing dialogue interface: speaker name + animated text box
 
 - S1-3 (Branching Dialogue) — receives `DisplayText` and `DisplayChoices` events
 - S1-4 (Touch Input) — receives routed tap events
+
+## Test Evidence
+
+Location: `production/qa/evidence/` — manual walkthrough doc with screenshot evidence for text animation, choice layout, portrait anchoring, and history panel
