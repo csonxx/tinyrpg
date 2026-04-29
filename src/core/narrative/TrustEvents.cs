@@ -29,12 +29,14 @@ namespace Core.Narrative
 
         public readonly float DeltaImperial;
         public readonly float DeltaUnderground;
+        public readonly bool IsSecret;
 
-        public TrustShiftAppliedEvent(float deltaImperial, float deltaUnderground)
+        public TrustShiftAppliedEvent(float deltaImperial, float deltaUnderground, bool isSecret = false)
         {
             Key = KEY;
             DeltaImperial = deltaImperial;
             DeltaUnderground = deltaUnderground;
+            IsSecret = isSecret;
         }
     }
 

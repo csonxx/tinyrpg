@@ -270,16 +270,5 @@ namespace UI.Dialogue
         }
 
         #endregion
-
-        #region Math Helpers
-
-        private static class Mathf
-        {
-            public static float FloorToInt(float f) => (float)Math.Floor(f);
-            public static float Sin(float rad) => (float)Math.Sin(rad);
-            public static float PI => (float)Math.PI;
-        }
-
-        #endregion
     }
 }

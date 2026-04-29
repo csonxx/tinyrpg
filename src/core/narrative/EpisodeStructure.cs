@@ -60,6 +60,15 @@ namespace Core.Narrative
         public bool IsRunning => _isRunning;
 
         /// <summary>
+        /// Initializes the episode structure with episode data.
+        /// Called by GameBootstrap before StartEpisode().
+        /// </summary>
+        public void Initialize(EpisodeData episodeData)
+        {
+            _episodeData = episodeData;
+        }
+
+        /// <summary>
         /// Event fired when the episode state changes.
         /// Payload: (EpisodeState previousState, EpisodeState newState).
         /// </summary>

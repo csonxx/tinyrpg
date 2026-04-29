@@ -10,6 +10,33 @@ namespace Core.Narrative
     /// </summary>
     public class TrustEconomySystem : MonoBehaviour
     {
+        #region Singleton
+
+        private static TrustEconomySystem _instance;
+        private static readonly object _lock = new object();
+
+        public static TrustEconomySystem Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            var go = new GameObject("TrustEconomySystem");
+                            _instance = go.AddComponent<TrustEconomySystem>();
+                            DontDestroyOnLoad(go);
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// NSM key for Imperial trust.
         /// </summary>
@@ -58,6 +85,13 @@ namespace Core.Narrative
 
         private void Awake()
         {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            _instance = this;
+
             if (_config == null)
             {
                 Debug.LogWarning("[TrustEconomySystem] No config assigned, using hardcoded defaults.");
@@ -133,7 +167,7 @@ namespace Core.Narrative
             _nsm.Mutate(UNDERGROUND_KEY, clampedShift.DeltaUnderground);
 
             // Emit TrustShiftAppliedEvent
-            EventBus.Emit(new TrustShiftAppliedEvent(clampedShift.DeltaImperial, clampedShift.DeltaUnderground));
+            _nsm.EventBus.Emit(new TrustShiftAppliedEvent(clampedShift.DeltaImperial, clampedShift.DeltaUnderground));
 
             CheckDangerCrisisThresholds(oldImperial, oldUnderground);
             CheckParityCrisis();
@@ -185,7 +219,7 @@ namespace Core.Narrative
         private void EmitTrustValueChanged()
         {
             if (_nsm == null) return;
-            EventBus.Emit(new TrustValueChangedEvent(ImperialTrust, UndergroundTrust));
+            _nsm.EventBus.Emit(new TrustValueChangedEvent(ImperialTrust, UndergroundTrust));
         }
 
         #endregion
@@ -212,7 +246,7 @@ namespace Core.Narrative
             if (_decayActive)
             {
                 _decayActive = false;
-                EventBus.Emit(new PassiveDecayActiveEvent(false));
+                _nsm.EventBus.Emit(new PassiveDecayActiveEvent(false));
             }
         }
 
@@ -224,7 +258,7 @@ namespace Core.Narrative
             yield return new WaitForSeconds(config.DecayGracePeriodSeconds);
 
             _decayActive = true;
-            EventBus.Emit(new PassiveDecayActiveEvent(true));
+            _nsm.EventBus.Emit(new PassiveDecayActiveEvent(true));
 
             // Decay loop
             while (true)
@@ -253,28 +287,28 @@ namespace Core.Narrative
             if (oldImperial > config.DangerThreshold && imperial <= config.DangerThreshold)
             {
                 _imperialInDangerZone = true;
-                EventBus.Emit(new DangerZoneEnteredEvent(IMPERIAL_KEY));
+                _nsm.EventBus.Emit(new DangerZoneEnteredEvent(IMPERIAL_KEY));
             }
 
             // Check Underground danger zone
             if (oldUnderground > config.DangerThreshold && underground <= config.DangerThreshold)
             {
                 _undergroundInDangerZone = true;
-                EventBus.Emit(new DangerZoneEnteredEvent(UNDERGROUND_KEY));
+                _nsm.EventBus.Emit(new DangerZoneEnteredEvent(UNDERGROUND_KEY));
             }
 
             // Check Imperial crisis zone
             if (oldImperial > config.CrisisThreshold && imperial <= config.CrisisThreshold)
             {
                 _imperialInCrisisZone = true;
-                EventBus.Emit(new CrisisEnteredEvent(IMPERIAL_KEY));
+                _nsm.EventBus.Emit(new CrisisEnteredEvent(IMPERIAL_KEY));
             }
 
             // Check Underground crisis zone
             if (oldUnderground > config.CrisisThreshold && underground <= config.CrisisThreshold)
             {
                 _undergroundInCrisisZone = true;
-                EventBus.Emit(new CrisisEnteredEvent(UNDERGROUND_KEY));
+                _nsm.EventBus.Emit(new CrisisEnteredEvent(UNDERGROUND_KEY));
             }
         }
 

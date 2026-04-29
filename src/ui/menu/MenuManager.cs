@@ -250,18 +250,14 @@ namespace UI.Menu
 
         private void InitializeSettingsUI()
         {
-            // Hardcoded MVP values. Settings System (Sprint 3) will replace this.
-            float musicVol = 1.0f;
-            float sfxVol = 1.0f;
-            float voiceVol = 1.0f;
-            bool haptic = true;
-            bool autoAdvance = false;
+            // Read current values from SettingsSystem
+            var settings = Core.Settings.SettingsSystem.Instance.Settings;
 
-            if (_musicVolumeSlider != null) _musicVolumeSlider.value = musicVol;
-            if (_sfxVolumeSlider != null) _sfxVolumeSlider.value = sfxVol;
-            if (_voiceVolumeSlider != null) _voiceVolumeSlider.value = voiceVol;
-            if (_hapticToggle != null) _hapticToggle.isOn = haptic;
-            if (_autoAdvanceToggle != null) _autoAdvanceToggle.isOn = autoAdvance;
+            if (_musicVolumeSlider != null) _musicVolumeSlider.value = settings.MusicVolume;
+            if (_sfxVolumeSlider != null) _sfxVolumeSlider.value = settings.SfxVolume;
+            if (_voiceVolumeSlider != null) _voiceVolumeSlider.value = settings.VoiceVolume;
+            if (_hapticToggle != null) _hapticToggle.isOn = settings.HapticEnabled;
+            if (_autoAdvanceToggle != null) _autoAdvanceToggle.isOn = settings.AutoAdvanceEnabled;
 
             // Accessibility settings read from AccessibilitySystem (S3-3)
             if (_reduceMotionToggle != null && AccessibilitySystem.Instance != null)
@@ -517,28 +513,27 @@ namespace UI.Menu
 
         private void OnMusicVolumeChanged(float value)
         {
-            // Hardcoded MVP — Settings System (Sprint 3) will handle actual persistence
-            Debug.Log($"[MenuManager] Music volume changed to {value}");
+            Core.Settings.SettingsSystem.Instance.SetMusicVolume(value);
         }
 
         private void OnSfxVolumeChanged(float value)
         {
-            Debug.Log($"[MenuManager] SFX volume changed to {value}");
+            Core.Settings.SettingsSystem.Instance.SetSfxVolume(value);
         }
 
         private void OnVoiceVolumeChanged(float value)
         {
-            Debug.Log($"[MenuManager] Voice volume changed to {value}");
+            Core.Settings.SettingsSystem.Instance.SetVoiceVolume(value);
         }
 
         private void OnHapticChanged(bool value)
         {
-            Debug.Log($"[MenuManager] Haptic feedback changed to {value}");
+            Core.Settings.SettingsSystem.Instance.SetHapticEnabled(value);
         }
 
         private void OnAutoAdvanceChanged(bool value)
         {
-            Debug.Log($"[MenuManager] Auto-advance changed to {value}");
+            Core.Settings.SettingsSystem.Instance.SetAutoAdvanceEnabled(value);
         }
 
         private void OnReduceMotionChanged(bool value)

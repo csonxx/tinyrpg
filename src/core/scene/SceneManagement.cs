@@ -71,7 +71,7 @@ namespace Core.Scene
 
         #region EventBus
 
-        private EventBus EventBus => _eventBus ?? Core.Narrative.EventBus.Global;
+        private EventBus EventBus => _eventBus ?? EventBus.Instance;
 
         #endregion
 

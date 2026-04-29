@@ -216,12 +216,12 @@ namespace Core.Accessibility
 
         private void SubscribeToEvents()
         {
-            EventBus.Subscribe<TransitionBeganEvent>(HandleTransitionBegan);
+            EventBus.Instance.Subscribe(TransitionBeganEvent.KEY, HandleTransitionBegan);
         }
 
         private void UnsubscribeFromEvents()
         {
-            EventBus.Unsubscribe<TransitionBeganEvent>(HandleTransitionBegan);
+            EventBus.Instance.Unsubscribe(TransitionBeganEvent.KEY, HandleTransitionBegan);
         }
 
         private void SetupColorblindOverlay()

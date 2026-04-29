@@ -20,6 +20,33 @@ namespace Core.Narrative
     /// </summary>
     public sealed class RelationshipMemorySystem : MonoBehaviour
     {
+        #region Singleton
+
+        private static RelationshipMemorySystem _instance;
+        private static readonly object _lock = new object();
+
+        public static RelationshipMemorySystem Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            var go = new GameObject("RelationshipMemorySystem");
+                            _instance = go.AddComponent<RelationshipMemorySystem>();
+                            DontDestroyOnLoad(go);
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        #endregion
+
         #region Constants
 
         /// <summary>
@@ -109,6 +136,12 @@ namespace Core.Narrative
 
         private void Awake()
         {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            _instance = this;
             _lastInteractionTimes = new Dictionary<string, float>();
         }
 

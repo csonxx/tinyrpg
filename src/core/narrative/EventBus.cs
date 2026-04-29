@@ -10,6 +10,11 @@ namespace Core.Narrative
     /// </summary>
     public sealed class EventBus
     {
+        /// <summary>
+        /// Global singleton instance for cross-system event communication.
+        /// </summary>
+        public static EventBus Instance { get; } = new EventBus();
+
         private readonly Dictionary<string, List<Action<NSMEvent>>> _listeners = new Dictionary<string, List<Action<NSMEvent>>>();
 
         /// <summary>

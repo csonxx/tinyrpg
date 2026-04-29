@@ -85,15 +85,15 @@ namespace UI.Dialogue
 
         private void OnEnable()
         {
-            DialogueEngine.Instance.EventBus.Subscribe(
+            NarrativeStateMachine.Instance.EventBus.Subscribe(
                 DialogueNodeChangedEvent.KEY,
                 HandleDialogueNodeChanged);
 
-            DialogueEngine.Instance.EventBus.Subscribe(
+            NarrativeStateMachine.Instance.EventBus.Subscribe(
                 DialogueChoicesDisplayedEvent.KEY,
                 HandleChoicesDisplayed);
 
-            DialogueEngine.Instance.EventBus.Subscribe(
+            NarrativeStateMachine.Instance.EventBus.Subscribe(
                 DialogueSceneCompleteEvent.KEY,
                 HandleSceneComplete);
 
@@ -109,15 +109,15 @@ namespace UI.Dialogue
             if (!NarrativeStateMachine.InstanceExists)
                 return;
 
-            DialogueEngine.Instance.EventBus.Unsubscribe(
+            NarrativeStateMachine.Instance.EventBus.Unsubscribe(
                 DialogueNodeChangedEvent.KEY,
                 HandleDialogueNodeChanged);
 
-            DialogueEngine.Instance.EventBus.Unsubscribe(
+            NarrativeStateMachine.Instance.EventBus.Unsubscribe(
                 DialogueChoicesDisplayedEvent.KEY,
                 HandleChoicesDisplayed);
 
-            DialogueEngine.Instance.EventBus.Unsubscribe(
+            NarrativeStateMachine.Instance.EventBus.Unsubscribe(
                 DialogueSceneCompleteEvent.KEY,
                 HandleSceneComplete);
 
