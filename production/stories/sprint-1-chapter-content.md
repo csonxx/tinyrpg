@@ -6,6 +6,9 @@
 > **Status**: backlog
 > **Estimate**: 2 days
 > **Owner**: writer
+> **Type**: Config/Data
+> **ADR**: No ADR applies — content data only
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -54,3 +57,7 @@ Author one complete dialogue scene for use in the Sprint 1 vertical slice. The s
 
 - S1-3 (Branching Dialogue) — needs stable data schema
 - Chapter Content Data GDD finalized
+
+## Test Evidence
+
+Location: `production/qa/smoke-[date].md` — smoke check pass verifying all nodes display, all choices apply correct shifts, all 3 endings reachable, cursor persists

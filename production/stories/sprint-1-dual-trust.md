@@ -6,6 +6,9 @@
 > **Status**: backlog
 > **Estimate**: 1 day
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — standard economy formula patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -51,3 +54,7 @@ Implement the dual trust tracking with danger/crisis thresholds and passive deca
 - S1-1 (NSM) — reads/writes trust values
 - S1-6 (HUD) — receives TrustValueChanged
 - Notification System — receives danger/crisis events
+
+## Test Evidence
+
+Location: `tests/unit/dual-trust/` — unit tests covering ApplyShift, Clamping, PassiveDecay, DangerZoneThreshold, CrisisThreshold, ParityCrisis

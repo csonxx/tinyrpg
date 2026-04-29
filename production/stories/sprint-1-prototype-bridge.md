@@ -6,6 +6,9 @@
 > **Status**: backlog
 > **Estimate**: 1 day
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — architecture pattern validation
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -34,3 +37,7 @@ The prototype validated:
 - S1-1 (NSM)
 - S1-3 (Branching Dialogue)
 - Prototype at `prototypes/dialogue-trust-loop/`
+
+## Test Evidence
+
+Location: `production/qa/evidence/` — code review sign-off confirming event format, signal names, and trust shift clamping documented
