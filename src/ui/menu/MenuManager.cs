@@ -1,4 +1,5 @@
 using System;
+using Core.Accessibility;
 using Core.Audio;
 using Core.Narrative;
 using Core.Persistence;
@@ -119,6 +120,10 @@ namespace UI.Menu
         [SerializeField] private Toggle _autoAdvanceToggle;
         [SerializeField] private Button _settingsBackButton;
 
+        [Header("Accessibility Settings (S3-3)")]
+        [SerializeField] private GameObject _accessibilitySection;
+        [SerializeField] private Toggle _reduceMotionToggle;
+
         [Header("Pause Button (HUD)")]
         [SerializeField] private Button _pauseButton;
 
@@ -233,6 +238,7 @@ namespace UI.Menu
             _voiceVolumeSlider?.onValueChanged.AddListener(OnVoiceVolumeChanged);
             _hapticToggle?.onValueChanged.AddListener(OnHapticChanged);
             _autoAdvanceToggle?.onValueChanged.AddListener(OnAutoAdvanceChanged);
+            _reduceMotionToggle?.onValueChanged.AddListener(OnReduceMotionChanged);
 
             // Initialize settings UI from current values
             InitializeSettingsUI();
@@ -256,6 +262,12 @@ namespace UI.Menu
             if (_voiceVolumeSlider != null) _voiceVolumeSlider.value = voiceVol;
             if (_hapticToggle != null) _hapticToggle.isOn = haptic;
             if (_autoAdvanceToggle != null) _autoAdvanceToggle.isOn = autoAdvance;
+
+            // Accessibility settings read from AccessibilitySystem (S3-3)
+            if (_reduceMotionToggle != null && AccessibilitySystem.Instance != null)
+            {
+                _reduceMotionToggle.isOn = AccessibilitySystem.Instance.ReduceMotionEnabled;
+            }
         }
 
         private void HideAllPanels()
@@ -527,6 +539,14 @@ namespace UI.Menu
         private void OnAutoAdvanceChanged(bool value)
         {
             Debug.Log($"[MenuManager] Auto-advance changed to {value}");
+        }
+
+        private void OnReduceMotionChanged(bool value)
+        {
+            if (AccessibilitySystem.Instance != null)
+            {
+                AccessibilitySystem.Instance.ReduceMotionEnabled = value;
+            }
         }
 
         #endregion

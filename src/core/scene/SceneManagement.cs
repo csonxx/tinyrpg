@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Accessibility;
 using Core.Narrative;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -120,7 +121,10 @@ namespace Core.Scene
                 return;
             }
 
-            StartCoroutine(LoadSceneCoroutine(sceneId, transitionType));
+            // Apply reduce motion override if enabled (S3-3 Accessibility)
+            TransitionType effectiveType = AccessibilitySystem.GetEffectiveTransitionType(transitionType);
+
+            StartCoroutine(LoadSceneCoroutine(sceneId, effectiveType));
         }
 
         private System.Collections.IEnumerator LoadSceneCoroutine(string sceneId, TransitionType transitionType)

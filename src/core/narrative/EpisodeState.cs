@@ -6,7 +6,8 @@ using UnityEngine;
 namespace Core.Narrative
 {
     /// <summary>
-    /// Represents a single scene within a chapter, including its scene ID and transition style.
+    /// Represents a single scene within a chapter, including its scene ID, transition style,
+    /// and optional branching configuration for Rule 5: Branching Path Selection.
     /// </summary>
     [Serializable]
     public sealed class SceneData
@@ -14,13 +15,91 @@ namespace Core.Narrative
         [SerializeField] private string _sceneId;
         [SerializeField] private bool _isMemoirOrFlashback;
 
+        // Branching fields (S3-4)
+        [SerializeField] private string _conditionExpression;
+        [SerializeField] private List<BranchTarget> _branchTargets;
+
         public string SceneId => _sceneId;
         public bool IsMemoirOrFlashback => _isMemoirOrFlashback;
+
+        /// <summary>
+        /// Returns true if this scene has a branching condition defined.
+        /// </summary>
+        public bool HasCondition => !string.IsNullOrEmpty(_conditionExpression);
+
+        /// <summary>
+        /// The condition expression to evaluate for branch selection.
+        /// Example: "trust.imperial >= 50 && clues.foundKey == 1"
+        /// </summary>
+        public string ConditionExpression => _conditionExpression ?? string.Empty;
+
+        /// <summary>
+        /// Gets branch targets as a dictionary for efficient lookup.
+        /// Returns null if no branch targets are defined.
+        /// </summary>
+        public Dictionary<string, string> BranchTargets
+        {
+            get
+            {
+                if (_branchTargets == null || _branchTargets.Count == 0)
+                    return null;
+
+                var dict = new Dictionary<string, string>();
+                foreach (var target in _branchTargets)
+                {
+                    if (!string.IsNullOrEmpty(target.BranchId) && !string.IsNullOrEmpty(target.SceneId))
+                    {
+                        dict[target.BranchId] = target.SceneId;
+                    }
+                }
+                return dict.Count > 0 ? dict : null;
+            }
+        }
 
         public SceneData(string sceneId, bool isMemoirOrFlashback = false)
         {
             _sceneId = sceneId;
             _isMemoirOrFlashback = isMemoirOrFlashback;
+        }
+
+        /// <summary>
+        /// Creates a scene with branching configuration.
+        /// </summary>
+        /// <param name="sceneId">The scene identifier.</param>
+        /// <param name="isMemoirOrFlashback">Whether this is a memoir/flashback scene.</param>
+        /// <param name="conditionExpression">Optional condition expression for branch selection.</param>
+        /// <param name="branchTargets">Optional list of branch targets.</param>
+        public SceneData(
+            string sceneId,
+            bool isMemoirOrFlashback,
+            string conditionExpression,
+            List<BranchTarget> branchTargets)
+        {
+            _sceneId = sceneId;
+            _isMemoirOrFlashback = isMemoirOrFlashback;
+            _conditionExpression = conditionExpression;
+            _branchTargets = branchTargets;
+        }
+    }
+
+    /// <summary>
+    /// Represents a single branch target for a branching scene.
+    /// </summary>
+    [Serializable]
+    public sealed class BranchTarget
+    {
+        [SerializeField] private string _branchId;
+        [SerializeField] private string _sceneId;
+
+        public string BranchId => _branchId;
+        public string SceneId => _sceneId;
+
+        public BranchTarget() { }
+
+        public BranchTarget(string branchId, string sceneId)
+        {
+            _branchId = branchId;
+            _sceneId = sceneId;
         }
     }
 

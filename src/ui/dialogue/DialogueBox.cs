@@ -3,6 +3,8 @@
 // Date: 2026-04-29
 
 using System;
+using Core.Narrative;
+using Core.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -75,6 +77,16 @@ namespace UI.Dialogue
             _tapIndicatorBaseY = _tapIndicator.anchoredPosition.y;
         }
 
+        private void OnEnable()
+        {
+            SubscribeToEvents();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromEvents();
+        }
+
         private void Update()
         {
             if (!_isAnimating)
@@ -98,6 +110,29 @@ namespace UI.Dialogue
                     _dialogueText.text = _fullText;
                     ShowTapIndicator();
                 }
+            }
+        }
+
+        #endregion
+
+        #region Event Subscription
+
+        private void SubscribeToEvents()
+        {
+            EventBus.Instance.Subscribe(TextSpeedChangedEvent.KEY, OnTextSpeedChanged);
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            EventBus.Instance.Unsubscribe(TextSpeedChangedEvent.KEY, OnTextSpeedChanged);
+        }
+
+        private void OnTextSpeedChanged(NSMEvent e)
+        {
+            if (e is TextSpeedChangedEvent evt)
+            {
+                _charDisplayTimeMs = (int)evt.Speed;
+                Debug.Log($"[DialogueBox] Text speed changed to {evt.Speed} ({_charDisplayTimeMs}ms per char)");
             }
         }
 

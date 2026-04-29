@@ -1,5 +1,6 @@
 using System;
 using Core.Narrative;
+using Core.Settings;
 using UnityEngine;
 
 namespace Core.Audio
@@ -54,7 +55,7 @@ namespace Core.Audio
         private string _currentBGM;
         private float _targetBGMVolume = 1.0f;
 
-        // Volume multipliers hardcoded for MVP (Settings System is separate story)
+        // Volume multipliers updated by SettingsSystem via events
         private float _masterVolume = 1.0f;
         private float _bgmVolume = 1.0f;
         private float _sfxVolume = 1.0f;
@@ -98,6 +99,11 @@ namespace Core.Audio
 
             // Subscribe to NSM state changes via NSM's EventBus
             NarrativeStateMachine.Instance.EventBus.Subscribe("nsm.state", OnNSMStateChanged);
+
+            // Subscribe to settings events for volume control
+            EventBus.Instance.Subscribe(MusicVolumeChangedEvent.KEY, OnMusicVolumeChanged);
+            EventBus.Instance.Subscribe(SFXVolumeChangedEvent.KEY, OnSFXVolumeChanged);
+            EventBus.Instance.Subscribe(VoiceVolumeChangedEvent.KEY, OnVoiceVolumeChanged);
         }
 
         private void UnsubscribeFromEvents()
@@ -110,6 +116,11 @@ namespace Core.Audio
             {
                 NarrativeStateMachine.Instance.EventBus.Unsubscribe("nsm.state", OnNSMStateChanged);
             }
+
+            // Unsubscribe from settings events
+            EventBus.Instance.Unsubscribe(MusicVolumeChangedEvent.KEY, OnMusicVolumeChanged);
+            EventBus.Instance.Unsubscribe(SFXVolumeChangedEvent.KEY, OnSFXVolumeChanged);
+            EventBus.Instance.Unsubscribe(VoiceVolumeChangedEvent.KEY, OnVoiceVolumeChanged);
         }
 
         #endregion
@@ -145,6 +156,33 @@ namespace Core.Audio
             if (e is StateChangedEvent stateEvent)
             {
                 HandleStateChange(stateEvent.NewState);
+            }
+        }
+
+        private void OnMusicVolumeChanged(NSMEvent e)
+        {
+            if (e is MusicVolumeChangedEvent evt)
+            {
+                _bgmVolume = evt.Volume;
+                Debug.Log($"[AudioManagement] Music volume changed to {evt.Volume:F2}");
+            }
+        }
+
+        private void OnSFXVolumeChanged(NSMEvent e)
+        {
+            if (e is SFXVolumeChangedEvent evt)
+            {
+                _sfxVolume = evt.Volume;
+                Debug.Log($"[AudioManagement] SFX volume changed to {evt.Volume:F2}");
+            }
+        }
+
+        private void OnVoiceVolumeChanged(NSMEvent e)
+        {
+            if (e is VoiceVolumeChangedEvent evt)
+            {
+                _voiceVolume = evt.Volume;
+                Debug.Log($"[AudioManagement] Voice volume changed to {evt.Volume:F2}");
             }
         }
 

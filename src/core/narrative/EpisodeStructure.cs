@@ -244,6 +244,31 @@ namespace Core.Narrative
         private void AdvanceSceneOrChapter()
         {
             var chapter = _episodeData.Chapters[_currentChapterIndex];
+            var currentScene = chapter.Scenes[_currentSceneIndex];
+
+            // Check for branching condition on the CURRENT scene (before advancing index)
+            var nsm = NarrativeStateMachine.Instance;
+            bool hasMoreScenes = _currentSceneIndex + 1 < chapter.Scenes.Count;
+
+            var branchResult = BranchingResolver.ResolveNextScene(currentScene, nsm, hasMoreScenes);
+
+            if (branchResult.IsDeadEnd)
+            {
+                // Dead end - no valid branch and no more linear scenes
+                CompleteChapter();
+                return;
+            }
+
+            if (branchResult.WasBranching && !string.IsNullOrEmpty(branchResult.NextSceneId))
+            {
+                // Branching occurred - load the branch target
+                _currentSceneIndex++;
+                SetState(EpisodeState.SceneTransitioning);
+                _sceneManagement.LoadScene(branchResult.NextSceneId, TransitionType.FADE_GREY);
+                return;
+            }
+
+            // Linear progression - advance to next scene in sequence
             _currentSceneIndex++;
 
             if (_currentSceneIndex >= chapter.Scenes.Count)
