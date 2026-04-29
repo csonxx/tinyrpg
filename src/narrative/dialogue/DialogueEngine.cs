@@ -88,7 +88,23 @@ namespace Core.Narrative.Dialogue
     /// </summary>
     public sealed class DialogueEngine
     {
+        #region Singleton
+
+        private static readonly Lazy<DialogueEngine> _instance = new Lazy<DialogueEngine>(() => new DialogueEngine());
+
+        /// <summary>
+        /// The singleton instance of the DialogueEngine.
+        /// </summary>
+        public static DialogueEngine Instance => _instance.Value;
+
+        #endregion
+
         #region Constants
+
+        /// <summary>
+        /// The character ID used for the player character.
+        /// </summary>
+        public const string PlayerCharacterId = "PLAYER";
 
         /// <summary>
         /// Maximum trust shift magnitude applied per CHOICE selection.
@@ -437,7 +453,7 @@ namespace Core.Narrative.Dialogue
             _autoAdvanceTimer = 0f;
 
             // Emit node changed event
-            _nsm.EventBus.Emit(new DialogueNodeChangedEvent(nodeId, node.Type));
+            _nsm.EventBus.Emit(new DialogueNodeChangedEvent(nodeId, node.Type, node.SpeakerId, node.Text));
 
             // Handle node type
             switch (node.Type)
