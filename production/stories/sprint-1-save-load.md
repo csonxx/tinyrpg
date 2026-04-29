@@ -6,6 +6,9 @@
 > **Status**: ready-for-dev
 > **Estimate**: 3 days
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — standard Unity file I/O patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -73,3 +76,7 @@ Implement save/load system that serializes full NSM state to JSON files in devic
 ## Dependencies
 
 - S1-1 (NSM) — NSM must exist before save/load can serialize it
+
+## Test Evidence
+
+Location: `tests/unit/save-load/` — unit tests covering SaveToSlot, LoadFromSlot, HashIntegrity, AutosaveTriggers
