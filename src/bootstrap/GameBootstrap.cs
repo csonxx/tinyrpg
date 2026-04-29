@@ -42,6 +42,9 @@ namespace Bootstrap
 
         private void Awake()
         {
+            // Persist across scene loads so bootstrap state survives menu navigation
+            DontDestroyOnLoad(gameObject);
+
             // Step 1: Initialize AccessibilitySystem (must be first)
             // AccessibilitySystem uses Lazy<T> singleton and Initialize() sets static state
             AccessibilitySystem.Instance.Initialize();

@@ -76,6 +76,9 @@ namespace Core.Narrative
 
         private void Awake()
         {
+            // Persist across scene loads so episode state survives menu navigation
+            DontDestroyOnLoad(gameObject);
+
             if (_sceneManagement == null)
             {
                 _sceneManagement = new DefaultEpisodeSceneManagement();
@@ -218,6 +221,10 @@ namespace Core.Narrative
             }
 
             var scene = chapter.Scenes[_currentSceneIndex];
+
+            // Store current scene ID in NSM so DialogueBridge can retrieve the correct DialogueTree
+            NarrativeStateMachine.Instance.Set(EpisodeKeys.CurrentScene, scene.SceneId);
+
             var transitionType = ResolveTransitionType(chapter, scene);
             _sceneManagement.LoadScene(scene.SceneId, transitionType);
         }
@@ -371,15 +378,19 @@ namespace Core.Narrative
 
     /// <summary>
     /// Default stub implementation of IEpisodeSceneManagement.
-    /// Logs scene load requests; replace with real Scene Management system before production.
+    /// Loads DialogueScene as a template for all dialogue scenes.
+    /// The DialogueBridge component on DialogueScene uses NSM.CurrentScene
+    /// to determine which DialogueTree to display.
     /// </summary>
     public sealed class DefaultEpisodeSceneManagement : IEpisodeSceneManagement
     {
         public void LoadScene(string sceneId, TransitionType transitionType)
         {
             Debug.Log($"[DefaultEpisodeSceneManagement] LoadScene(\"{sceneId}\", {transitionType})");
-            // TODO: Replace with actual Unity scene loading:
-            // SceneManager.LoadScene(sceneId);
+            // Load DialogueScene as the runtime dialogue container.
+            // DialogueBridge reads NSM.CurrentScene to get the actual scene ID
+            // and loads the corresponding DialogueTree from EpisodeData.
+            UnityEngine.SceneManagement.SceneManager.LoadScene("DialogueScene");
         }
     }
 }

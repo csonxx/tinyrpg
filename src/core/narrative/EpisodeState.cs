@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Narrative.Dialogue;
 using Core.Scene;
 using UnityEngine;
 
@@ -13,14 +14,18 @@ namespace Core.Narrative
     public sealed class SceneData
     {
         [SerializeField] private string _sceneId;
+        [SerializeField] private string _titleKey;
         [SerializeField] private bool _isMemoirOrFlashback;
+        [SerializeField] private DialogueTree _dialogueTree;
 
         // Branching fields (S3-4)
         [SerializeField] private string _conditionExpression;
         [SerializeField] private List<BranchTarget> _branchTargets;
 
         public string SceneId => _sceneId;
+        public string TitleKey => _titleKey;
         public bool IsMemoirOrFlashback => _isMemoirOrFlashback;
+        public DialogueTree DialogueTree => _dialogueTree;
 
         /// <summary>
         /// Returns true if this scene has a branching condition defined.
@@ -56,27 +61,35 @@ namespace Core.Narrative
             }
         }
 
-        public SceneData(string sceneId, bool isMemoirOrFlashback = false)
+        public SceneData(string sceneId, string titleKey = null, bool isMemoirOrFlashback = false, DialogueTree dialogueTree = null)
         {
             _sceneId = sceneId;
+            _titleKey = titleKey;
             _isMemoirOrFlashback = isMemoirOrFlashback;
+            _dialogueTree = dialogueTree;
         }
 
         /// <summary>
         /// Creates a scene with branching configuration.
         /// </summary>
         /// <param name="sceneId">The scene identifier.</param>
+        /// <param name="titleKey">Optional localization key for scene title.</param>
         /// <param name="isMemoirOrFlashback">Whether this is a memoir/flashback scene.</param>
+        /// <param name="dialogueTree">Optional DialogueTree asset for this scene.</param>
         /// <param name="conditionExpression">Optional condition expression for branch selection.</param>
         /// <param name="branchTargets">Optional list of branch targets.</param>
         public SceneData(
             string sceneId,
+            string titleKey,
             bool isMemoirOrFlashback,
+            DialogueTree dialogueTree,
             string conditionExpression,
             List<BranchTarget> branchTargets)
         {
             _sceneId = sceneId;
+            _titleKey = titleKey;
             _isMemoirOrFlashback = isMemoirOrFlashback;
+            _dialogueTree = dialogueTree;
             _conditionExpression = conditionExpression;
             _branchTargets = branchTargets;
         }
@@ -132,16 +145,30 @@ namespace Core.Narrative
     public sealed class EpisodeData
     {
         [SerializeField] private string _episodeId;
+        [SerializeField] private string _titleKey;
         [SerializeField] private List<ChapterData> _chapters;
         [SerializeField] private bool _isLastEpisode;
 
         public string EpisodeId => _episodeId;
+        public string TitleKey => _titleKey;
         public IReadOnlyList<ChapterData> Chapters => _chapters;
         public bool IsLastEpisode => _isLastEpisode;
 
+        public EpisodeData(string episodeId, string titleKey, List<ChapterData> chapters, bool isLastEpisode = false)
+        {
+            _episodeId = episodeId;
+            _titleKey = titleKey;
+            _chapters = chapters;
+            _isLastEpisode = isLastEpisode;
+        }
+
+        /// <summary>
+        /// Backward-compatible constructor without titleKey.
+        /// </summary>
         public EpisodeData(string episodeId, List<ChapterData> chapters, bool isLastEpisode = false)
         {
             _episodeId = episodeId;
+            _titleKey = null;
             _chapters = chapters;
             _isLastEpisode = isLastEpisode;
         }

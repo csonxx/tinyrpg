@@ -20,5 +20,11 @@ namespace Core.Narrative
         /// NSM key storing the currently active chapter index (string representation of int).
         /// </summary>
         public const string CurrentChapter = "chapter.current";
+
+        /// <summary>
+        /// NSM key storing the currently active scene ID.
+        /// Set by EpisodeStructure before loading a scene; read by DialogueBridge after scene is ready.
+        /// </summary>
+        public const string CurrentScene = "episode.current.scene";
     }
 }
