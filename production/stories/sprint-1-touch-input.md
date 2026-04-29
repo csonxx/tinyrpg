@@ -6,6 +6,9 @@
 > **Status**: ready-for-dev
 > **Estimate**: 2 days
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — standard Unity input handling patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -65,3 +68,7 @@ Implement the single gateway for all touch input: gesture recognition (tap, swip
 
 - S1-3 (Branching Dialogue) — receives advance/choice signals
 - S1-5 (Dialogue UI) — receives show-history and character-info signals
+
+## Test Evidence
+
+Location: `tests/unit/touch-input/` — unit tests covering GestureRecognition, ContextRouting, DoubleTapCancel, HapticFeedback

@@ -6,6 +6,9 @@
 > **Status**: ready-for-dev
 > **Estimate**: 4 days
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — event-driven dialogue traversal patterns
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -74,3 +77,7 @@ Per design: `clamp(Δ, -10, +10)` applied at the dialogue engine level before pa
 - S1-2 (Save/Load) — cursor must survive save/load
 - Touch Input (S1-4) — sends choice selection signals
 - Dialogue UI (S1-5) — receives display events
+
+## Test Evidence
+
+Location: `tests/unit/dialogue/` — unit tests covering TreeTraversal, ChoiceProcessing, TrustShiftClamping, ConditionBranching, CursorPersistence
