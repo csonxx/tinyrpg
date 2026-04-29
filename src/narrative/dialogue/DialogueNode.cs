@@ -42,6 +42,7 @@ namespace Core.Narrative.Dialogue
         [SerializeField] private string _id;
         [SerializeField] private DialogueNodeType _type;
         [SerializeField][TextArea] private string _text;
+        [SerializeField] private string _speakerId;
         [SerializeField] private string _nextNodeId;
         [SerializeField] private ChoiceData[] _choices;
         [SerializeField] private float[] _trustShifts;
@@ -63,6 +64,12 @@ namespace Core.Narrative.Dialogue
         /// The text to display for TEXT and CHOICE nodes.
         /// </summary>
         public string Text => _text;
+
+        /// <summary>
+        /// The character ID of the speaker for this node. null for narration.
+        /// "PLAYER" indicates the player character; all other IDs are NPCs.
+        /// </summary>
+        public string SpeakerId => _speakerId;
 
         /// <summary>
         /// The node to advance to after a TEXT node is confirmed.
@@ -101,6 +108,7 @@ namespace Core.Narrative.Dialogue
             string id,
             DialogueNodeType type,
             string text = null,
+            string speakerId = null,
             string nextNodeId = null,
             ChoiceData[] choices = null,
             float[] trustShifts = null,
@@ -111,6 +119,7 @@ namespace Core.Narrative.Dialogue
             _id = id;
             _type = type;
             _text = text;
+            _speakerId = speakerId;
             _nextNodeId = nextNodeId;
             _choices = choices;
             _trustShifts = trustShifts;
@@ -122,9 +131,9 @@ namespace Core.Narrative.Dialogue
         /// <summary>
         /// Creates a TEXT node that advances to the specified node.
         /// </summary>
-        public static DialogueNode Text(string id, string text, string nextNodeId)
+        public static DialogueNode Text(string id, string text, string nextNodeId, string speakerId = null)
         {
-            return new DialogueNode(id, DialogueNodeType.TEXT, text, nextNodeId);
+            return new DialogueNode(id, DialogueNodeType.TEXT, text, speakerId, nextNodeId);
         }
 
         /// <summary>
@@ -135,9 +144,10 @@ namespace Core.Narrative.Dialogue
             string text,
             ChoiceData[] choices,
             float[] trustShifts,
-            string nextNodeId)
+            string nextNodeId,
+            string speakerId = null)
         {
-            return new DialogueNode(id, DialogueNodeType.CHOICE, text, nextNodeId, choices, trustShifts);
+            return new DialogueNode(id, DialogueNodeType.CHOICE, text, speakerId, nextNodeId, choices, trustShifts);
         }
 
         /// <summary>

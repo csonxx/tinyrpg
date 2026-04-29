@@ -12,11 +12,15 @@ namespace Core.Narrative.Dialogue
         public const string KEY = "dialogue.node_changed";
         public string NodeId { get; }
         public string NodeType { get; }
+        public string SpeakerId { get; }
+        public string Text { get; }
 
-        public DialogueNodeChangedEvent(string nodeId, DialogueNodeType nodeType)
+        public DialogueNodeChangedEvent(string nodeId, DialogueNodeType nodeType, string speakerId, string text)
         {
             NodeId = nodeId;
             NodeType = nodeType.ToString();
+            SpeakerId = speakerId;
+            Text = text;
         }
 
         public override string Key => KEY;

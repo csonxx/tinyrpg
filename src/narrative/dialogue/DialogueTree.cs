@@ -15,8 +15,11 @@ namespace Core.Narrative.Dialogue
     {
         [SerializeField] private string _sceneId;
         [SerializeField] private DialogueNode[] _nodes;
+        [SerializeField] private Sprite[] _portraitSprites;
+        [SerializeField] private string[] _portraitCharacterIds;
 
         private Dictionary<string, DialogueNode> _nodeMap;
+        private Dictionary<string, Sprite> _portraitMap;
 
         /// <summary>
         /// The unique identifier for this dialogue scene.
@@ -61,6 +64,30 @@ namespace Core.Narrative.Dialogue
             }
         }
 
+        private void BuildPortraitMap()
+        {
+            _portraitMap = new Dictionary<string, Sprite>();
+            if (_portraitSprites == null || _portraitCharacterIds == null) return;
+            int count = Mathf.Min(_portraitSprites.Length, _portraitCharacterIds.Length);
+            for (int i = 0; i < count; i++)
+            {
+                if (!string.IsNullOrEmpty(_portraitCharacterIds[i]) && _portraitSprites[i] != null)
+                    _portraitMap[_portraitCharacterIds[i]] = _portraitSprites[i];
+            }
+        }
+
+        /// <summary>
+        /// Returns the portrait Sprite for the given character ID.
+        /// Returns null if no portrait is found.
+        /// </summary>
+        public Sprite GetPortrait(string characterId)
+        {
+            if (_portraitMap == null)
+                BuildPortraitMap();
+
+            return _portraitMap.TryGetValue(characterId ?? string.Empty, out var sprite) ? sprite : null;
+        }
+
         /// <summary>
         /// Creates a DialogueTree at runtime from a dictionary of nodes.
         /// Useful for tests and runtime-generated dialogue.
@@ -79,6 +106,7 @@ namespace Core.Narrative.Dialogue
         private void OnEnable()
         {
             BuildNodeMap();
+            BuildPortraitMap();
         }
 
         #endregion
