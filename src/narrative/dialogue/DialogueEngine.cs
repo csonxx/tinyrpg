@@ -271,6 +271,9 @@ namespace Core.Narrative.Dialogue
             _isWaitingForChoiceSelection = false;
             _autoAdvanceTimer = 0f;
 
+            // Update NSM state so other systems know dialogue is active
+            _nsm.SetState(NSMState.DIALOGUE_ACTIVE);
+
             AdvanceToNode(firstNodeId);
         }
 
@@ -545,6 +548,9 @@ namespace Core.Narrative.Dialogue
             _currentTree = null;
             _isTextAnimating = false;
             _isWaitingForChoiceSelection = false;
+
+            // Reset NSM state so other systems know dialogue is no longer active
+            _nsm.SetState(NSMState.SCENE_ACTIVE);
 
             _nsm.EventBus.Emit(new DialogueSceneCompleteEvent(sceneId));
         }
