@@ -199,13 +199,15 @@ namespace Core.Narrative
         private void SubscribeToNSM()
         {
             if (_nsm == null) return;
-            _nsm.Subscribe("trust.*", OnTrustChanged);
+            _nsm.Subscribe(IMPERIAL_KEY, OnTrustChanged);
+            _nsm.Subscribe(UNDERGROUND_KEY, OnTrustChanged);
         }
 
         private void UnsubscribeFromNSM()
         {
             if (_nsm == null) return;
-            _nsm.Unsubscribe("trust.*", OnTrustChanged);
+            _nsm.Unsubscribe(IMPERIAL_KEY, OnTrustChanged);
+            _nsm.Unsubscribe(UNDERGROUND_KEY, OnTrustChanged);
         }
 
         private void OnTrustChanged(NSMEvent e)

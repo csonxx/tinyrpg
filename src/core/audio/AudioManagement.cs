@@ -61,6 +61,9 @@ namespace Core.Audio
         private float _sfxVolume = 1.0f;
         private float _voiceVolume = 1.0f;
 
+        // Audio sources for actual playback
+        [SerializeField] private AudioSource _bgmAudioSource;
+
         #endregion
 
         #region Lifecycle
@@ -98,7 +101,10 @@ namespace Core.Audio
             EventBus.Instance.Subscribe(VoicePlayEvent.KEY, OnVoicePlay);
 
             // Subscribe to NSM state changes via NSM's EventBus
-            NarrativeStateMachine.Instance.EventBus.Subscribe("nsm.state", OnNSMStateChanged);
+            if (NarrativeStateMachine.Instance != null)
+            {
+                NarrativeStateMachine.Instance.EventBus.Subscribe("nsm.state", OnNSMStateChanged);
+            }
 
             // Subscribe to settings events for volume control
             EventBus.Instance.Subscribe(MusicVolumeChangedEvent.KEY, OnMusicVolumeChanged);
@@ -230,6 +236,14 @@ namespace Core.Audio
             StopBGM();
             _currentBGM = bgmKey;
             var volume = GetEffectiveBGMVolume();
+
+            // Apply volume to AudioSource
+            EnsureBGMAudioSource();
+            if (_bgmAudioSource != null)
+            {
+                _bgmAudioSource.volume = volume;
+            }
+
             Debug.Log($"[AudioManagement] PlayBGM: key='{bgmKey}', volume={volume:F2}");
         }
 
@@ -331,6 +345,16 @@ namespace Core.Audio
         #endregion
 
         #region Volume Helpers
+
+        private void EnsureBGMAudioSource()
+        {
+            if (_bgmAudioSource == null)
+            {
+                _bgmAudioSource = gameObject.AddComponent<AudioSource>();
+                _bgmAudioSource.loop = true;
+                _bgmAudioSource.playOnAwake = false;
+            }
+        }
 
         private float GetEffectiveBGMVolume() => _masterVolume * _bgmVolume;
         private float GetEffectiveSFXVolume() => _masterVolume * _sfxVolume;
