@@ -6,6 +6,9 @@
 > **Status**: ready-for-dev
 > **Estimate**: 5 days
 > **Owner**: gameplay-programmer
+> **Type**: Logic
+> **ADR**: No ADR applies — foundational infrastructure layer
+> **Manifest Version**: N/A — manifest not yet created
 
 ---
 
@@ -91,6 +94,10 @@ void Subscribe(string keyPattern, Action<NSMEvent> callback);
 ## Open Questions
 
 None — all resolved in GDD.
+
+## Test Evidence
+
+Location: `tests/unit/nsm/` — unit tests covering Mutate, Undo, Serialize, Deserialize, EventRouting
 
 ## Dependencies
 
