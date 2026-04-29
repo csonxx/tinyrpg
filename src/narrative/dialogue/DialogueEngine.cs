@@ -116,6 +116,11 @@ namespace Core.Narrative.Dialogue
         /// </summary>
         public const float DEFAULT_AUTO_ADVANCE_DELAY = 5f;
 
+        /// <summary>
+        /// Cached empty array to avoid allocation in hot path when emitting CHOICE events with null choices.
+        /// </summary>
+        private static readonly ChoiceData[] s_emptyChoices = Array.Empty<ChoiceData>();
+
         #endregion
 
         #region NSM Keys
@@ -328,7 +333,7 @@ namespace Core.Narrative.Dialogue
 
             if (node != null && !string.IsNullOrEmpty(node.NextNodeId))
             {
-                AdvanceToNode(node.NextNodeId);
+                AdvanceToNode(node.NextNodeId, nodeId);
             }
         }
 
@@ -353,10 +358,10 @@ namespace Core.Narrative.Dialogue
 
             string selectedNextNodeId = choices[choiceIndex].NextNodeId;
             float rawTrustShift = choiceIndex < trustShifts.Count ? trustShifts[choiceIndex] : 0f;
-            float clampedTrustShift = Mathf.Clamp(rawTrustShift, -MAX_TRUST_SHIFT, MAX_TRUST_SHIFT);
+            float clampedTrustShift = UnityEngine.Mathf.Clamp(rawTrustShift, -MAX_TRUST_SHIFT, MAX_TRUST_SHIFT);
 
             // Apply trust shift via NSM
-            if (Mathf.Abs(clampedTrustShift) > 0f)
+            if (UnityEngine.Mathf.Abs(clampedTrustShift) > 0f)
             {
                 // Emit trust shift event first
                 _nsm.EventBus.Emit(new DialogueTrustShiftEvent(rawTrustShift, clampedTrustShift));
@@ -364,8 +369,19 @@ namespace Core.Narrative.Dialogue
                 // Determine which trust key to update based on sign of shift
                 // Positive shift -> imperial, negative shift -> underground
                 string trustKey = clampedTrustShift >= 0 ? "trust.imperial" : "trust.underground";
-                float delta = Mathf.Abs(clampedTrustShift);
+                float delta = UnityEngine.Mathf.Abs(clampedTrustShift);
                 _nsm.Mutate(trustKey, delta);
+            }
+
+            // Emit relationship shift event for RelationshipMemorySystem (S2-3)
+            // The relationship shift uses the node's speaker as the target character
+            if (!string.IsNullOrEmpty(node.SpeakerId) && node.SpeakerId != PlayerCharacterId)
+            {
+                if (UnityEngine.Mathf.Abs(clampedTrustShift) > 0f)
+                {
+                    _nsm.EventBus.Emit(new Core.Narrative.DialogueRelationshipShiftEvent(
+                        node.SpeakerId, rawTrustShift, clampedTrustShift));
+                }
             }
 
             // Log to choice history
@@ -380,7 +396,15 @@ namespace Core.Narrative.Dialogue
             _nsm.Set(KEY_CHOICE_HISTORY, history);
 
             _isWaitingForChoiceSelection = false;
-            AdvanceToNode(selectedNextNodeId);
+
+            // Register clue for this choice if it has one
+            var selectedChoice = choices[choiceIndex];
+            if (!string.IsNullOrEmpty(selectedChoice.ClueId))
+            {
+                ClueSystem.RegisterClue(selectedChoice.ClueId, null);
+            }
+
+            AdvanceToNode(selectedNextNodeId, nodeId);
         }
 
         /// <summary>
@@ -404,7 +428,7 @@ namespace Core.Narrative.Dialogue
                 _autoAdvanceTimer = 0f;
                 if (!string.IsNullOrEmpty(node.NextNodeId))
                 {
-                    AdvanceToNode(node.NextNodeId);
+                    AdvanceToNode(node.NextNodeId, nodeId);
                 }
             }
         }
@@ -428,7 +452,7 @@ namespace Core.Narrative.Dialogue
 
         #region Private Helpers
 
-        private void AdvanceToNode(string nodeId)
+        private void AdvanceToNode(string nodeId, string fromNodeId = null)
         {
             if (_currentTree == null) return;
 
@@ -437,6 +461,16 @@ namespace Core.Narrative.Dialogue
             {
                 Debug.LogError($"[DialogueEngine] Node '{nodeId}' not found in tree '{_currentTree.SceneId}'.");
                 return;
+            }
+
+            // Register clue for the node we are leaving (if any)
+            if (fromNodeId != null)
+            {
+                var fromNode = _currentTree.GetNode(fromNodeId);
+                if (fromNode != null && !string.IsNullOrEmpty(fromNode.RegisterClue))
+                {
+                    ClueSystem.RegisterClue(fromNode.RegisterClue, fromNode.ClueCategory);
+                }
             }
 
             // Persist cursor
@@ -467,7 +501,7 @@ namespace Core.Narrative.Dialogue
                     _isTextAnimating = false;
                     _isWaitingForChoiceSelection = true;
                     var choices = node.Choices;
-                    _nsm.EventBus.Emit(new DialogueChoicesDisplayedEvent(nodeId, choices as ChoiceData[] ?? new ChoiceData[0]));
+                    _nsm.EventBus.Emit(new DialogueChoicesDisplayedEvent(nodeId, choices ?? s_emptyChoices));
                     break;
 
                 case DialogueNodeType.CONDITION:
@@ -495,7 +529,7 @@ namespace Core.Narrative.Dialogue
             }
 
             string nextNodeId = result.Value ? node.TrueNextNodeId : node.FalseNextNodeId;
-            AdvanceToNode(nextNodeId);
+            AdvanceToNode(nextNodeId, node.Id);
         }
 
         private void HandleEndNode()
@@ -518,18 +552,6 @@ namespace Core.Narrative.Dialogue
         #endregion
 
         #region Math Helpers
-
-        private static class Mathf
-        {
-            public static float Clamp(float value, float min, float max)
-            {
-                if (value < min) return min;
-                if (value > max) return max;
-                return value;
-            }
-
-            public static float Abs(float value) => value >= 0 ? value : -value;
-        }
 
         #endregion
     }

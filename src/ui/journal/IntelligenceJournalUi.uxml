@@ -1,0 +1,35 @@
+<UXML xmlns="UnityEngine.UIElements">
+  <VisualElement class="journal-backdrop">
+    <VisualElement class="journal-panel">
+      <!-- Header -->
+      <VisualElement class="journal-header">
+        <Label class="journal-title" text="Intelligence Journal"/>
+        <Button class="journal-close-button" text="X"/>
+      </VisualElement>
+
+      <!-- Documents Section -->
+      <VisualElement class="journal-section">
+        <Label class="journal-section-header" text="Documents"/>
+        <VisualElement class="journal-section-content" name="documentsContent"/>
+      </VisualElement>
+
+      <!-- Conversations Section -->
+      <VisualElement class="journal-section">
+        <Label class="journal-section-header" text="Conversations"/>
+        <VisualElement class="journal-section-content" name="conversationsContent"/>
+      </VisualElement>
+
+      <!-- Evidence Section -->
+      <VisualElement class="journal-section">
+        <Label class="journal-section-header" text="Evidence"/>
+        <VisualElement class="journal-section-content" name="evidenceContent"/>
+      </VisualElement>
+
+      <!-- Uncategorized Section -->
+      <VisualElement class="journal-section" name="uncategorizedSection">
+        <Label class="journal-section-header" text="Miscellaneous"/>
+        <VisualElement class="journal-section-content" name="uncategorizedContent"/>
+      </VisualElement>
+    </VisualElement>
+  </VisualElement>
+</UXML>

@@ -49,6 +49,8 @@ namespace Core.Narrative.Dialogue
         [SerializeField] private string _conditionExpr;
         [SerializeField] private string _trueNextNodeId;
         [SerializeField] private string _falseNextNodeId;
+        [SerializeField] private string _registerClue;
+        [SerializeField] private string _clueCategory;
 
         /// <summary>
         /// Unique identifier for this node within its dialogue tree.
@@ -102,6 +104,18 @@ namespace Core.Narrative.Dialogue
         public string FalseNextNodeId => _falseNextNodeId;
 
         /// <summary>
+        /// Clue ID to register when this node is completed (after advancing past it).
+        /// Null or empty means no clue is registered.
+        /// </summary>
+        public string RegisterClue => _registerClue;
+
+        /// <summary>
+        /// Category of the clue registered by this node (e.g. "documents", "conversations", "evidence").
+        /// Null or empty is treated as uncategorized.
+        /// </summary>
+        public string ClueCategory => _clueCategory;
+
+        /// <summary>
         /// Constructs a DialogueNode with all fields.
         /// </summary>
         public DialogueNode(
@@ -114,7 +128,9 @@ namespace Core.Narrative.Dialogue
             float[] trustShifts = null,
             string conditionExpr = null,
             string trueNextNodeId = null,
-            string falseNextNodeId = null)
+            string falseNextNodeId = null,
+            string registerClue = null,
+            string clueCategory = null)
         {
             _id = id;
             _type = type;
@@ -126,6 +142,8 @@ namespace Core.Narrative.Dialogue
             _conditionExpr = conditionExpr;
             _trueNextNodeId = trueNextNodeId;
             _falseNextNodeId = falseNextNodeId;
+            _registerClue = registerClue;
+            _clueCategory = clueCategory;
         }
 
         /// <summary>
@@ -184,14 +202,22 @@ namespace Core.Narrative.Dialogue
     {
         [SerializeField] private string _text;
         [SerializeField] private string _nextNodeId;
+        [SerializeField] private string _clueId;
 
         public string Text => _text;
         public string NextNodeId => _nextNodeId;
 
-        public ChoiceData(string text, string nextNodeId)
+        /// <summary>
+        /// Clue ID to register when this choice is selected.
+        /// Null or empty means no clue is registered.
+        /// </summary>
+        public string ClueId => _clueId;
+
+        public ChoiceData(string text, string nextNodeId, string clueId = null)
         {
             _text = text;
             _nextNodeId = nextNodeId;
+            _clueId = clueId;
         }
     }
 }

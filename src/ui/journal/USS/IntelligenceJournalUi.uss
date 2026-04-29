@@ -1,0 +1,162 @@
+/* IntelligenceJournalUi.uss — Styles for the Intelligence Journal modal overlay */
+
+.root {
+    --journal-bg-color: rgba(10, 10, 20, 0.85);
+    --journal-panel-bg: #1a1a2e;
+    --journal-panel-border: #3a3a5e;
+    --journal-header-bg: #0f0f1a;
+    --journal-accent: #c9a227;
+    --journal-text-primary: #e8e8f0;
+    --journal-text-secondary: #8888aa;
+    --journal-text-undiscovered: #555566;
+    --journal-section-spacing: 16px;
+    --journal-item-spacing: 8px;
+}
+
+/* Slide-in animation */
+@keyframes slideInJournal {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutJournal {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Backdrop */
+.journal-backdrop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: var(--journal-bg-color);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Panel */
+.journal-panel {
+    width: 80%;
+    max-width: 600px;
+    max-height: 80%;
+    background-color: var(--journal-panel-bg);
+    border-left: 3px solid var(--journal-accent);
+    border-right: 3px solid var(--journal-accent);
+    border-top: 3px solid var(--journal-accent);
+    border-bottom: 3px solid var(--journal-accent);
+    border-radius: 8px;
+    flex-direction: column;
+    overflow: hidden;
+
+    animation: slideInJournal 0.3s ease-out forwards;
+}
+
+/* Header */
+.journal-header {
+    background-color: var(--journal-header-bg);
+    padding: 16px 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--journal-panel-border);
+}
+
+.journal-title {
+    font-size: 24px;
+    color: var(--journal-accent);
+    -unity-font-style: bold;
+}
+
+.journal-close-button {
+    width: 36px;
+    height: 36px;
+    background-color: #2a2a3e;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: var(--journal-panel-border);
+    color: var(--journal-text-primary);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.journal-close-button:hover {
+    background-color: #3a3a5e;
+}
+
+/* Sections */
+.journal-section {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--journal-panel-border);
+}
+
+.journal-section:last-child {
+    border-bottom: none;
+}
+
+.journal-section-header {
+    font-size: 16px;
+    color: var(--journal-accent);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.journal-section-content {
+    flex-direction: column;
+    padding-left: 12px;
+}
+
+/* Clue items */
+.journal-clue-item {
+    flex-direction: row;
+    padding: 6px 0;
+    align-items: center;
+}
+
+.journal-clue-bullet {
+    width: 6px;
+    height: 6px;
+    background-color: var(--journal-accent);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.journal-clue-name {
+    font-size: 15px;
+    color: var(--journal-text-primary);
+}
+
+.journal-clue-undiscovered {
+    font-size: 15px;
+    color: var(--journal-text-undiscovered);
+    -unity-font-style: italic;
+}
+
+/* Scroll view integration */
+.journal-scroll-view {
+    max-height: 70vh;
+    flex-grow: 1;
+}
+
+/* Content area when empty */
+.journal-empty-text {
+    font-size: 14px;
+    color: var(--journal-text-secondary);
+    -unity-font-style: italic;
+    padding: 8px 0;
+}
