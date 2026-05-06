@@ -47,6 +47,9 @@ namespace Core.Narrative.Dialogue
 
             // Listen for episode complete to show completion UI
             _nsm.Subscribe(EpisodeEvents.EpisodeCompleteKey, OnEpisodeComplete);
+
+            // Listen for settings changes to forward to DialogueEngine
+            EventBus.Instance.Subscribe(Core.Settings.AutoAdvanceChangedEvent.KEY, OnAutoAdvanceChanged);
         }
 
         private void UnsubscribeFromEvents()
@@ -56,6 +59,7 @@ namespace Core.Narrative.Dialogue
 
             EventBus.Instance.Unsubscribe(Core.Scene.SceneReadyEvent.KEY, OnSceneReady);
             _nsm.Unsubscribe(EpisodeEvents.EpisodeCompleteKey, OnEpisodeComplete);
+            EventBus.Instance.Unsubscribe(Core.Settings.AutoAdvanceChangedEvent.KEY, OnAutoAdvanceChanged);
         }
 
         private void OnSceneReady(NSMEvent e)
@@ -97,6 +101,14 @@ namespace Core.Narrative.Dialogue
             Debug.Log("[DialogueBridge] Episode complete. Showing completion UI.");
             // TODO: Show episode complete screen / UI transition
             // For now, log the event. UI team will hook up the completion screen.
+        }
+
+        private void OnAutoAdvanceChanged(NSMEvent e)
+        {
+            if (e is Core.Settings.AutoAdvanceChangedEvent evt)
+            {
+                DialogueEngine.Instance.AutoAdvanceEnabled = evt.Enabled;
+            }
         }
 
         private DialogueTree GetDialogueTreeForScene(string sceneId)
