@@ -1,7 +1,7 @@
 # S3-2: Notification System
 
 > **Type**: Logic/UI
-> **Status**: Ready for Dev
+> **Status**: Complete
 > **Sprint**: 3
 > **Estimate**: 2 days
 > **Owner**: gameplay-programmer
@@ -21,3 +21,10 @@
 - `src/ui/notifications/NotificationSystem.cs` — toast queue and display logic
 - `src/ui/notifications/TrustToast.cs` — individual toast UI
 - `tests/unit/ui/NotificationSystemTests.cs` — unit tests
+
+## Completion Notes
+**Completed**: 2026-05-06
+**Criteria**: 5/5 passing
+**Deviations**: ADVISORY — IsSecret trust shifts are silently skipped (not shown). QA plan checklist mentions showing "???" for secret shifts, but story AC does not require this. Design decision: silent skip vs "???" display not codified.
+**Test Evidence**: Unit test at `tests/unit/ui/NotificationSystemTests.cs`
+**Code Review**: Not reviewed (lean mode)

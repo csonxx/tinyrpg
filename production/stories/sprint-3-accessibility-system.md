@@ -1,7 +1,7 @@
 # S3-3: Accessibility System
 
 > **Type**: Logic/UI
-> **Status**: Ready for Dev
+> **Status**: Complete
 > **Sprint**: 3
 > **Estimate**: 2 days
 > **Owner**: ui-programmer
@@ -23,3 +23,10 @@
 - `src/core/accessibility/ColorblindMode.cs` — shader color matrix presets
 - `src/ui/accessibility/AccessibilitySettingsUI.cs` — settings panel
 - `tests/unit/core/AccessibilitySystemTests.cs` — unit tests
+
+## Completion Notes
+**Completed**: 2026-05-06
+**Criteria**: 4/5 passing, 1 deferred (AC4 screen reader — UI/manual verification required)
+**Deviations**: ADVISORY — AccessibilitySystem uses separate PlayerPrefs backend, not integrated with SettingsSystem. Architectural decision from sprint implementation; may be consolidated in future.
+**Test Evidence**: Unit test at `tests/unit/core/AccessibilitySystemTests.cs` + manual UI walkthrough required for AC4
+**Code Review**: Not reviewed (lean mode)

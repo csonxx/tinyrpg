@@ -1,7 +1,7 @@
 # S3-1: Settings System
 
 > **Type**: Logic/Config
-> **Status**: Ready for Dev
+> **Status**: Complete
 > **Sprint**: 3
 > **Estimate**: 2 days
 > **Owner**: gameplay-programmer
@@ -21,3 +21,11 @@
 - `src/core/settings/SettingsSystem.cs` — main MonoBehaviour, JSON file persistence
 - `src/core/settings/SettingsData.cs` — serializable settings data class
 - `tests/unit/core/SettingsSystemTests.cs` — unit tests
+
+## Completion Notes
+**Completed**: 2026-05-06
+**Criteria**: 5/5 passing
+**Deviations**: None
+**Test Evidence**: Unit test at `tests/unit/core/SettingsSystemTests.cs`
+**Code Review**: Not reviewed (lean mode)
+**Notes**: AC4 (auto-advance) required fix — DialogueBridge was missing AutoAdvanceChangedEvent subscription. Fixed in commit 97d53c8.

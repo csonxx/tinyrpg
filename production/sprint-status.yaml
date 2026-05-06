@@ -6,42 +6,42 @@ goal: "Complete Vertical Slice: Settings, Notifications, Accessibility, and Bran
 start: "2026-05-11"
 end: "2026-05-22"
 generated: "2026-04-29"
-updated: "2026-04-29"
+updated: "2026-05-06"
 
 stories:
   - id: "3-1"
     name: "Settings System"
     file: "production/stories/sprint-3-settings-system.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 2
     blocker: ""
-    completed: ""
+    completed: "2026-05-06"
   - id: "3-2"
     name: "Notification System"
     file: "production/stories/sprint-3-notification-system.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: gameplay-programmer
     estimate_days: 2
     blocker: ""
-    completed: ""
+    completed: "2026-05-06"
   - id: "3-3"
     name: "Accessibility System"
     file: "production/stories/sprint-3-accessibility-system.md"
     priority: must-have
-    status: ready-for-dev
+    status: done
     owner: ui-programmer
     estimate_days: 2
     blocker: ""
-    completed: ""
+    completed: "2026-05-06"
   - id: "3-4"
     name: "Branching Path Resolution"
     file: "production/stories/sprint-3-branching-paths.md"
     priority: should-have
-    status: backlog
+    status: done
     owner: gameplay-programmer
     estimate_days: 3
     blocker: ""
-    completed: ""
+    completed: "2026-05-06"

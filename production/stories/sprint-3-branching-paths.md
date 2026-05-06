@@ -1,7 +1,7 @@
 # S3-4: Branching Path Resolution
 
 > **Type**: Logic/Integration
-> **Status**: Ready for Dev
+> **Status**: Complete
 > **Sprint**: 3
 > **Estimate**: 3 days
 > **Owner**: gameplay-programmer
@@ -21,3 +21,10 @@
 - `src/core/narrative/BranchingResolver.cs` — condition evaluation and path selection
 - `src/core/narrative/ConditionExpression.cs` — expression parser for CONDITION nodes
 - `tests/unit/narrative/BranchingResolverTests.cs` — unit tests
+
+## Completion Notes
+**Completed**: 2026-05-06
+**Criteria**: 4/5 passing, 1 deferred (AC5 3+ branching paths — requires sample chapter content verification in playtest)
+**Deviations**: None
+**Test Evidence**: Unit test at `tests/unit/narrative/BranchingResolverTests.cs`
+**Code Review**: Not reviewed (lean mode)
